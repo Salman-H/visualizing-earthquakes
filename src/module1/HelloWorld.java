@@ -2,10 +2,12 @@ package module1;
 
 import processing.core.PApplet;
 import de.fhpotsdam.unfolding.UnfoldingMap;
+import de.fhpotsdam.unfolding.core.Coordinate;
 import de.fhpotsdam.unfolding.geo.Location;
 import de.fhpotsdam.unfolding.providers.AbstractMapProvider;
 import de.fhpotsdam.unfolding.providers.Google;
 import de.fhpotsdam.unfolding.providers.MBTilesMapProvider;
+import de.fhpotsdam.unfolding.providers.Microsoft;
 import de.fhpotsdam.unfolding.utils.MapUtils;
 
 /** HelloWorld
@@ -32,11 +34,11 @@ public class HelloWorld extends PApplet
 	/** The map we use to display our home town: La Jolla, CA */
 	UnfoldingMap map1;
 	
-	/** The map you will use to display your home town */ 
+	/** The map you will use to display your home town: Montreal, QC */ 
 	UnfoldingMap map2;
 
 	public void setup() {
-		size(2000, 1400, P2D);  // Set up the Applet window to be 800x600
+		size(2050, 1400, P2D);  // Set up the Applet window to be 800x600
 		                      // The OPENGL argument indicates to use the 
 		                      // Processing library's 2D drawing
 		                      // You'll learn more about processing in Module 3
@@ -45,15 +47,19 @@ public class HelloWorld extends PApplet
 		// Play around with these numbers and see what happens!
 		this.background(200, 210, 210);
 		
-		// Select a map provider
-		AbstractMapProvider provider = new Google.GoogleTerrainProvider();
+		// Select a map provider for map1
+		AbstractMapProvider provider1 = new Google.GoogleTerrainProvider();
+		
+		// Select a map provider for map2
+		AbstractMapProvider provider2 = new Microsoft.AerialProvider();
+	
 		// Set a zoom level
 		int zoomLevel = 10;
 		
 		if (offline) {
 			// If you are working offline, you need to use this provider 
 			// to work with the maps that are local on your computer.  
-			provider = new MBTilesMapProvider(mbTilesString);
+			provider1 = new MBTilesMapProvider(mbTilesString);
 			// 3 is the maximum zoom level for working offline
 			zoomLevel = 3;
 		}
@@ -65,7 +71,7 @@ public class HelloWorld extends PApplet
 		// The 6th argument specifies the map provider.  
 		// There are several providers built-in.
 		// Note if you are working offline you must use the MBTilesMapProvider
-		map1 = new UnfoldingMap(this, 50, 50, 950, 1200, provider);
+		map1 = new UnfoldingMap(this, 50, 50, 950, 1200, provider1);
 
 		// The next line zooms in and centers the map at 
 	    // 32.9 (latitude) and -117.2 (longitude)
@@ -76,6 +82,9 @@ public class HelloWorld extends PApplet
 		
 		// TODO: Add code here that creates map2 
 		// Then you'll modify draw() below
+		map2 = new UnfoldingMap(this, 1050, 50, 950, 1200, provider2);
+		map2.zoomAndPanTo(zoomLevel, new Location(45.5f, -73.9f));
+		MapUtils.createDefaultEventDispatcher(this, map2);
 		
 
 	}
@@ -85,6 +94,7 @@ public class HelloWorld extends PApplet
 		// So far we only draw map1...
 		// TODO: Add code so that both maps are displayed
 		map1.draw();
+		map2.draw();
 	}
 
 	
