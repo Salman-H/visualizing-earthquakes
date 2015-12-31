@@ -3,7 +3,14 @@ package datatestmodule;
 import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.providers.Google;
 import de.fhpotsdam.unfolding.utils.MapUtils;
+import de.fhpotsdam.unfolding.marker.*;
+import de.fhpotsdam.unfolding.data.Feature;
+
+
+import de.fhpotsdam.unfolding.data.GeoJSONReader;
 import processing.core.PApplet;
+
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -17,15 +24,34 @@ public class LifeExpectancy extends PApplet {
 	 * Visualizing life expectancy data on the world map
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	UnfoldingMap map;
 	HashMap<String, Float> lifeExpByCountryHM;
 	
+	/**
+	 * (non-Javadoc)
+	 * @see processing.core.PApplet#setup()
+	 * 
+	 * unfoldingmaps.org/javadoc
+	 * 
+	 * Class FEATURE: 
+	 * A feature stores one or more locations, its type, and additional data properties
+	 * 
+	 * Interface MARKER: 
+	 * Marker interface for all markers to be drawn on to maps. 
+	 * A marker has at least one location, and properties. 
+	 * A marker can be drawn, selected, and tested if hit. 
+	
+	 */
+	List<Feature> countryFeaturesList;
+	List<Marker> countryMarkersList;
+
 	
 	// Executes once
 	public void setup() {
 		
-		size(800, 600, OPENGL);		// specify OpenGL renderer with size
-		map = new UnfoldingMap(this, 50, 50, 700, 500, new Google.GoogleMapProvider());
+		size(2500, 2100, OPENGL);		// specify OpenGL renderer with size
+		map = new UnfoldingMap(this, 50, 50, 2400, 2000, new Google.GoogleMapProvider());
 		
 		// for default interactivity
 		MapUtils.createDefaultEventDispatcher(this, map);
@@ -35,7 +61,42 @@ public class LifeExpectancy extends PApplet {
 		
 		// Test HashMap
 		System.out.println(lifeExpByCountryHM.get("CAN"));
+		
+		// 1 Feature + 1 Marker per Country
+		/*
+		 * Class GeoJSONReader in unfolding.data extends GeoDataReader -> Reads
+		 * GeoJSON files and creates features
+		 * 
+		 * Feature Helper Method: loadData(PApplet, String fileName) -> Parses
+		 * a GeoJSON String and creates features for them -> returns <Feature>
+		 */
+		countryFeaturesList = GeoJSONReader.loadData(this, "countries.geo.json");
+		
+		/*
+		 * Class MapUtils
+		 * -> Provides utility and convenience methods for simplifying map usage
+		 * 
+		 * MapUtils Helper Method: createSimpleMarkers(<Feature>)
+		 * -> Creates simple markers from features
+		 * -> Returns a list of markers
+		 * 
+		 */
+		countryMarkersList = MapUtils.createSimpleMarkers(countryFeaturesList);
+		
+		/*
+		 * UnfoldingMap Method: addMarkers(List<Markers>)
+		 * -> Adds multiple markers to the map from List<Markers>
+		 * -> Returns nothing
+		 */
+		map.addMarkers(countryMarkersList);
+		
+		/*
+		 * After adding Features and Markers, we need to color-code countries
+		 * depending on life expectancy 
+		 */
+	
 	}
+	
 	
 	
 	// Executes often
@@ -82,5 +143,11 @@ public class LifeExpectancy extends PApplet {
 		
 		return lifeExpHashMap;
 	}
+	
+	/**
+	 * color code countries depending on average life expectancy of that country
+	 * 
+	 */
+	
 
 }
