@@ -94,6 +94,7 @@ public class LifeExpectancy extends PApplet {
 		 * After adding Features and Markers, we need to color-code countries
 		 * depending on life expectancy 
 		 */
+		colorCodeCountries();
 	
 	}
 	
@@ -148,6 +149,38 @@ public class LifeExpectancy extends PApplet {
 	 * color code countries depending on average life expectancy of that country
 	 * 
 	 */
+	private void colorCodeCountries() {
+		// Need to map average life expectancy range to RGB Red range 10 to 255
+		
+		// for each marker in CountriesMarkerList, get the country ID
+		for(Marker marker: countryMarkersList) {
+			 String countryID = marker.getId();
+			 
+			// if lifeExpectancyHashMap of (country ID, avg life expec) contains that country ID 
+			 if (lifeExpByCountryHM.containsKey(countryID)) {
+				// get the value i.e. float avg life expec of that country ID key
+				float lifeExpValue = lifeExpByCountryHM.get(countryID);
+				
+				// and map to a corresponding value in range 10 to 255
+				// then store that mapped value as int. 
+				int colorCode = (int)map(lifeExpValue, 40, 90, 10, 255);
+				
+				// The color that is varied depending on the life exp value is 
+				// actually the B value in RGB. The more the life exp, the higher the
+				// color code, and the higher the Blue value below, and the lower the Red value.
+				// Thus, Countries with higher life expectancies will have a higher Blue value and lower Red value
+				// whereas countries with lower life expectancies with have a lower Blue value and higher REd value
+				marker.setColor(color(255-colorCode, 100, colorCode));
+			 }
+			 else {
+				 // if the country is not in our HashMap,
+				 // give that country a neutral color
+				 marker.setColor(color(150, 150, 150));
+			 }
+			 
+		}
+		
+	}
 	
 
 }
