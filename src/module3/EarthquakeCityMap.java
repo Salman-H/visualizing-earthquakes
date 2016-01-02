@@ -51,14 +51,16 @@ public class EarthquakeCityMap extends PApplet {
 
 	
 	public void setup() {
-		size(2500, 1700, OPENGL);
+		size(2450, 1400, P2D);
+		
+		this.background(0, 51, 50);
 
 		if (offline) {
 		    map = new UnfoldingMap(this, 200, 50, 2400, 1600, new MBTilesMapProvider(mbTilesString));
 		    earthquakesURL = "2.5_week.atom"; 	// Same feed, saved Aug 7, 2015, for working offline
 		}
 		else {
-			map = new UnfoldingMap(this, 200, 50, 2400, 1600, new Google.GoogleMapProvider());
+			map = new UnfoldingMap(this, 250, 50, 2400, 1300, new Google.GoogleMapProvider());
 			// IF YOU WANT TO TEST WITH A LOCAL FILE, uncomment the next line
 			//earthquakesURL = "2.5_week.atom";
 		}
@@ -174,6 +176,55 @@ public class EarthquakeCityMap extends PApplet {
 	private void addKey() 
 	{	
 		// Remember you can use Processing's graphics methods here
+		
+		// Rectangle Key
+		fill(220, 220, 220);
+		rect(50, 50, 500, 1300);
+		
+		// Key
+		fill(0);
+		text("KEY", 200, 150);
+		text("Class: Magnitude", 200, 200);
+		
+		// Major, Red
+		stroke(255, 0, 0);
+		fill(255, 0, 0);
+		ellipse(200, 300, 60, 60);
+		fill(0);
+		text("Major: 7+", 240, 310);
+		textSize(25);
+		
+		// Strong, Orange
+		stroke(255, 128, 0);
+		fill(255, 128, 0);
+		ellipse(200, 400, 50, 50);
+		fill(0);
+		text("Strong: 6.0-6.9", 240, 410);
+		textSize(25);
+		
+		// Moderate, Yellow
+		stroke(255, 255, 0);
+		fill(255, 255, 0);
+		ellipse(200, 500, 40, 40);
+		fill(0);
+		text("Moderate: 5.0-5.9", 240, 510);
+		textSize(25);
+		
+		// Light, Blue
+		stroke(0, 128, 255);
+		fill(0, 128, 255);
+		ellipse(200, 600, 30, 30);
+		fill(0);
+		text("Light: 4.0-4.9", 240, 610);
+		textSize(25);
+		
+		// Minor, Green
+		stroke(0, 255, 0);
+		fill(0, 255, 0);
+		ellipse(200, 700, 20, 20);
+		fill(0);
+		text("Minor: Below 4.0", 240, 710);
+		textSize(25);
 	
 	}
 }
