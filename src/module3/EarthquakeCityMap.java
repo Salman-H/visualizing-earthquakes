@@ -85,14 +85,23 @@ public class EarthquakeCityMap extends PApplet {
 	    
 	    // Here is an example of how to use Processing's color method to generate 
 	    // an int that represents the color yellow.  
-	    int yellow = color(255, 255, 0);
+	    // int yellow = color(255, 255, 0);
 	    
 	    //TODO: Add code here as appropriate
 	    // for each PointFeature in List earthquakes,    
 	    for (PointFeature pointFeature: earthquakes) {
 	    	// create a SimplePointMarker for that pointFeature
-	    	// and add that SimplePointMarker to ArrayList markers
-	    	markers.add(createMarker(pointFeature));
+	    	
+	    	SimplePointMarker currentMarker = createMarker(pointFeature);
+	    	
+	    	// get magnitude of PointFeature and parse to Float from String
+			float magnitude = Float.parseFloat(pointFeature.getProperty("magnitude").toString());
+			
+			// activate the marker depending on earthquake magnitude
+			activateMarkers(currentMarker, magnitude);
+			
+			// add current SimplePointMarker to ArrayList markers
+			markers.add(currentMarker);
 	    }
 	    // display all markers on the map
 	    map.addMarkers(markers);
@@ -105,10 +114,52 @@ public class EarthquakeCityMap extends PApplet {
 	{
 		// get Location of that PointFeature, and create a new SimplePointMarker with that Location
 		// Note: Location represents a geo location defined by latitude and longitude
-		SimplePointMarker simplePointMarker = new SimplePointMarker(feature.getLocation()); 
-		simplePointMarker.setRadius(10);
+		SimplePointMarker marker = new SimplePointMarker(feature.getLocation()); 
 		
-		return simplePointMarker;
+		return marker;
+	}
+	
+	/**
+	 *  Change color and size of marker depending on earthquake magnitude scale classification
+	 *  
+	 *  CLASS		MAGNITUDE	Marker Color and Radius
+	 *  Great 		8 or more	Red			60		
+	 *  Major 		7 - 7.9		Red			50
+	 *  Strong 		6 - 6.9		Orange		40
+	 *  Moderate 	5 - 5.9		Yellow		30
+	 *  Light 		4 - 4.9		Blue		20
+	 *  Minor 		3 -3.9		Green		10
+	 *  
+	 */
+	private void activateMarkers(SimplePointMarker m, float mag) {
+		
+		if (mag >= 7.0) {
+			// set size of marker
+			m.setRadius(50);
+			// set color
+			m.setColor(color(255, 0, 0));
+		}
+		
+		else if (mag >= 6.0 && mag <= 6.9) {
+			m.setRadius(40);
+			m.setColor(color(255, 128, 0));
+		}
+		
+		else if (mag >= 5.0 && mag <= 5.9) {
+			m.setRadius(30);
+			m.setColor(color(255, 255, 0));
+		}
+		
+		else if (mag >= 4.0 && mag <= 4.9) {
+			m.setRadius(20);
+			m.setColor(color(0, 128, 255));
+		}
+		
+		else {
+			// less than 4.0
+			m.setRadius(10);
+			m.setColor(color(0, 255, 0));
+		}
 	}
 	
 	public void draw() {
