@@ -24,8 +24,8 @@ import parsing.ParseFeed;
 /** EarthquakeCityMap
  * An application with an interactive map displaying earthquake data.
  * Author: UC San Diego Intermediate Software Development MOOC team
- * @author Your name here
- * Date: July 17, 2015
+ * @author Salman Hashmi
+ * Date: January 1, 2016
  * */
 public class EarthquakeCityMap extends PApplet {
 
@@ -51,19 +51,19 @@ public class EarthquakeCityMap extends PApplet {
 
 	
 	public void setup() {
-		size(950, 600, OPENGL);
+		size(2500, 1700, OPENGL);
 
 		if (offline) {
-		    map = new UnfoldingMap(this, 200, 50, 700, 500, new MBTilesMapProvider(mbTilesString));
+		    map = new UnfoldingMap(this, 200, 50, 2400, 1600, new MBTilesMapProvider(mbTilesString));
 		    earthquakesURL = "2.5_week.atom"; 	// Same feed, saved Aug 7, 2015, for working offline
 		}
 		else {
-			map = new UnfoldingMap(this, 200, 50, 700, 500, new Google.GoogleMapProvider());
+			map = new UnfoldingMap(this, 200, 50, 2400, 1600, new Google.GoogleMapProvider());
 			// IF YOU WANT TO TEST WITH A LOCAL FILE, uncomment the next line
 			//earthquakesURL = "2.5_week.atom";
 		}
 		
-	    map.zoomToLevel(2);
+	    //map.zoomToLevel(2);
 	    MapUtils.createDefaultEventDispatcher(this, map);	
 			
 	    // The List you will populate with new SimplePointMarkers
@@ -88,6 +88,14 @@ public class EarthquakeCityMap extends PApplet {
 	    int yellow = color(255, 255, 0);
 	    
 	    //TODO: Add code here as appropriate
+	    // for each PointFeature in List earthquakes,    
+	    for (PointFeature pointFeature: earthquakes) {
+	    	// create a SimplePointMarker for that pointFeature
+	    	// and add that SimplePointMarker to ArrayList markers
+	    	markers.add(createMarker(pointFeature));
+	    }
+	    // display all markers on the map
+	    map.addMarkers(markers);
 	}
 		
 	// A suggested helper method that takes in an earthquake feature and 
@@ -95,8 +103,12 @@ public class EarthquakeCityMap extends PApplet {
 	// TODO: Implement this method and call it from setUp, if it helps
 	private SimplePointMarker createMarker(PointFeature feature)
 	{
-		// finish implementing and use this method, if it helps.
-		return new SimplePointMarker(feature.getLocation());
+		// get Location of that PointFeature, and create a new SimplePointMarker with that Location
+		// Note: Location represents a geo location defined by latitude and longitude
+		SimplePointMarker simplePointMarker = new SimplePointMarker(feature.getLocation()); 
+		simplePointMarker.setRadius(10);
+		
+		return simplePointMarker;
 	}
 	
 	public void draw() {
