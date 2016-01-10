@@ -77,7 +77,7 @@ public class EarthquakeCityMap extends PApplet {
 		// FOR TESTING: Set earthquakesURL to be one of the testing files by uncommenting
 		// one of the lines below.  This will work whether you are online or offline
 		//earthquakesURL = "test1.atom";
-		//earthquakesURL = "test2.atom";
+		earthquakesURL = "test2.atom";
 		
 		// WHEN TAKING THIS QUIZ: Uncomment the next line
 		//earthquakesURL = "quiz1.atom";
@@ -111,6 +111,8 @@ public class EarthquakeCityMap extends PApplet {
 	    }
 
 	    // could be used for debugging
+	    // Note: if the applet is launched with a large earthquake file/feed 
+	    // (e.g. 1.0+ Past week or 30 days), printQuakes may take a long time to run
 	    printQuakes();
 	 		
 	    // (3) Add markers to map
@@ -197,9 +199,37 @@ public class EarthquakeCityMap extends PApplet {
 	private void printQuakes() 
 	{
 		// TODO: Implement this method
+		int oceanQuakeCount = 0;
+		
+		for (Marker country: countryMarkers) {
+			
+			int countryQuakeCount = 0;
+			String countryName = country.getStringProperty("name");
+			
+			for(Marker quake: quakeMarkers) {
+				// check all quakeMarkers against the current countryMarker to see 
+				// which (if any) occurs in that country
+				
+				if (countryName.equals(quake.getStringProperty("country"))) {
+					countryQuakeCount++;
+				}
+			}
+			// print result for current country if it had any earthquakes
+			if (countryQuakeCount > 0) {
+				System.out.println(countryName + ": " + countryQuakeCount);
+			}						
+		}
+		// print earthquakes occurring in the ocean	
+		for (Marker quake: quakeMarkers) {
+			// check for ocean quakes
+			// if the country property of the current earthquake is not set,
+			// that implies that this quake does not occur on land i.e. occurs in ocean
+			if (quake.getProperty("country") == null) {
+				oceanQuakeCount++;
+			}
+		}
+		System.out.println("OCEAN QUAKES: " + oceanQuakeCount);
 	}
-	
-	
 	
 	// helper method to test whether a given earthquake is in a given country
 	// This will also add the country property to the properties of the earthquake 
