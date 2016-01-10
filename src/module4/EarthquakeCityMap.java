@@ -77,7 +77,7 @@ public class EarthquakeCityMap extends PApplet {
 		// FOR TESTING: Set earthquakesURL to be one of the testing files by uncommenting
 		// one of the lines below.  This will work whether you are online or offline
 		//earthquakesURL = "test1.atom";
-		earthquakesURL = "test2.atom";
+		// earthquakesURL = "test2.atom";
 		
 		// WHEN TAKING THIS QUIZ: Uncomment the next line
 		//earthquakesURL = "quiz1.atom";
@@ -113,7 +113,7 @@ public class EarthquakeCityMap extends PApplet {
 	    // could be used for debugging
 	    // Note: if the applet is launched with a large earthquake file/feed 
 	    // (e.g. 1.0+ Past week or 30 days), printQuakes may take a long time to run
-	    printQuakes();
+	    // printQuakes();
 	 		
 	    // (3) Add markers to map
 	    //     NOTE: Country markers are not added to the map.  They are used
@@ -140,27 +140,37 @@ public class EarthquakeCityMap extends PApplet {
 		
 		fill(0);
 		textAlign(LEFT, CENTER);
-		textSize(26);
-		text("Earthquake Key", 150, 75);
+		textSize(28);
 		
+		text("Earthquake Key", 150, 105);
+		
+		// City Marker Triangle
 		fill(color(255, 0, 0));
-		// center: 50, 125, TRI_SIZE: 10
-		triangle(150, 115, 140, 135, 160, 135);
+		triangle(150, 145, 135, 175, 165, 175);	// center: 150, 150, TRI_SIZE: 15
 		
-		// fill(color(255, 0, 0));
-		// ellipse(50, 125, 15, 15);
+		// Land Quake Circle
+		fill(color(255, 255, 255));
+		stroke(color(0, 0, 0));
+		ellipse(150, 200, 30, 30);
 		
-		// fill(color(255, 255, 0));
-		// ellipse(50, 175, 10, 10);
-		
-		// fill(color(0, 0, 255));
-		// ellipse(50, 225, 5, 5);
-		
+		// Ocean Quake Square
+		fill(color(255, 255, 255));
+		stroke(color(0, 0, 0));
+		rect(135, 230, 30, 30);
+
 		fill(0, 0, 0);
-		text("City Marker", 175, 125);
+		text("City Marker", 195, 160);
+		text("Land Quake", 195, 200);
+		text("Ocean Quake", 195, 240);
+		
+		textAlign(LEFT, CENTER);
+		text("Size ~ Magnitude", 140, 299);
 		// text("5.0+ Magnitude", 75, 125);
 		// text("4.0+ Magnitude", 75, 175);
 		// text("Below 4.0", 75, 225);
+		
+		
+		
 	}
 
 	
