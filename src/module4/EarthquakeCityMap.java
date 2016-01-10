@@ -157,6 +157,21 @@ public class EarthquakeCityMap extends PApplet {
 		fill(color(255, 255, 255));
 		stroke(color(0, 0, 0));
 		rect(135, 230, 30, 30);
+		
+		// Shallow 
+		fill(color(255, 255, 0));
+		stroke(color(0, 0, 0));
+		ellipse(150, 362, 30, 30);
+		
+		// Intermediate
+		fill(color(0, 0, 255));
+		stroke(color(0, 0, 0));
+		ellipse(150, 407, 30, 30);
+		
+		// Deep
+		fill(color(255, 0, 0));
+		stroke(color(0, 0, 0));
+		ellipse(150, 452, 30, 30);
 
 		fill(0, 0, 0);
 		text("City Marker", 195, 160);
@@ -165,6 +180,9 @@ public class EarthquakeCityMap extends PApplet {
 		
 		textAlign(LEFT, CENTER);
 		text("Size ~ Magnitude", 140, 299);
+		text("Shallow (0-70km)", 195, 360);
+		text("Intermediate (70-300km)", 195, 405);
+		text("Deep (300-700km)", 195, 450);
 		// text("5.0+ Magnitude", 75, 125);
 		// text("4.0+ Magnitude", 75, 175);
 		// text("Below 4.0", 75, 225);

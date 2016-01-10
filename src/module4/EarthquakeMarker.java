@@ -77,6 +77,24 @@ public abstract class EarthquakeMarker extends SimplePointMarker
 	// You might find the getters below helpful.
 	private void colorDetermine(PGraphics pg) {
 		//TODO: Implement this method
+		float depth = getDepth();
+		
+		// Shallow earthquakes are between 0 and 70 km deep;
+		if (depth >= 0.0 && depth <= THRESHOLD_INTERMEDIATE) {
+			// indicate with yellow
+			pg.fill(255, 255, 0);
+		}
+		// Intermediate earthquakes, 70 - 300 km deep;
+		else if (depth > THRESHOLD_INTERMEDIATE && depth <= THRESHOLD_DEEP) {
+			// indicate with blue
+			pg.fill(0, 0, 255);
+		}
+		// Deep earthquakes, 300 - 700 km deep
+		else if (depth > THRESHOLD_DEEP) {
+			// indicate with red
+			pg.fill(255, 0, 0);
+		}
+		
 	}
 	
 	
