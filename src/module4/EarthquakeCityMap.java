@@ -20,8 +20,8 @@ import processing.core.PApplet;
 /** EarthquakeCityMap
  * An application with an interactive map displaying earthquake data.
  * Author: UC San Diego Intermediate Software Development MOOC team
- * @author Your name here
- * Date: July 17, 2015
+ * @author Salman Hashmi
+ * Date: January 9, 2016
  * */
 public class EarthquakeCityMap extends PApplet {
 	
@@ -62,13 +62,13 @@ public class EarthquakeCityMap extends PApplet {
 	
 	public void setup() {		
 		// (1) Initializing canvas and map tiles
-		size(900, 700, OPENGL);
+		size(2450, 1400, OPENGL);
 		if (offline) {
 		    map = new UnfoldingMap(this, 200, 50, 650, 600, new MBTilesMapProvider(mbTilesString));
 		    earthquakesURL = "2.5_week.atom";  // The same feed, but saved August 7, 2015
 		}
 		else {
-			map = new UnfoldingMap(this, 200, 50, 650, 600, new Google.GoogleMapProvider());
+			map = new UnfoldingMap(this, 200, 50, 2400, 1300, new Google.GoogleMapProvider());
 			// IF YOU WANT TO TEST WITH A LOCAL FILE, uncomment the next line
 		    //earthquakesURL = "2.5_week.atom";
 		}
@@ -134,7 +134,7 @@ public class EarthquakeCityMap extends PApplet {
 	private void addKey() {	
 		// Remember you can use Processing's graphics methods here
 		fill(255, 250, 240);
-		rect(25, 50, 150, 250);
+		rect(25, 50, 500, 1300);
 		
 		fill(0);
 		textAlign(LEFT, CENTER);
@@ -166,7 +166,25 @@ public class EarthquakeCityMap extends PApplet {
 		
 		// TODO: Implement this method using the helper method isInCountry
 		
-		// not inside any country
+		// We need to check if the input PointFeature earthquake location is 
+		// in *some* country to establish that it is actually on land
+		
+		// for each countryMarker in List countryMarkers,
+		for (Marker countryMarker: countryMarkers) {
+			
+			// check if the input PointFeature earthquake is in that countryMarker
+			if (isInCountry(earthquake, countryMarker)) {
+				// if given earthquake PointFeature is in *some* country, it means it's on land, so
+				return true;
+				// Note that isInCountry() method also sets the "country" property on the 
+				// countryMarker to the country where it finds the input earthquake to have occurred
+				// This essentially updates the "country" property of all countryMarkers in List 
+				// countryMarkers for the input earthquake location
+			}
+		}
+		// We have looped through all countryMarkers and didn't find the 
+		// input PointFeature earthquake location in any one of them, this means that
+		// this earthquake location is not on land and, therefore, must be in the ocean
 		return false;
 	}
 	
