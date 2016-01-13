@@ -65,6 +65,8 @@ public abstract class EarthquakeMarker extends SimplePointMarker
 		drawEarthquake(pg, x, y);
 		
 		// OPTIONAL TODO: draw X over marker if within past day		
+		crossMarker(pg, x, y);
+		
 		
 		// reset to previous styling
 		pg.popStyle();
@@ -97,6 +99,22 @@ public abstract class EarthquakeMarker extends SimplePointMarker
 		
 	}
 	
+	// Cross a Marker if it occurs in the Past Hour or in the Past Day
+	private void crossMarker(PGraphics pg, float x, float y) {
+		String age = getAge();
+		
+		// "Past Hour" and "Past Day" are possible values of the "age" property
+		if ("Past Hour".equals(age) || "Past Day".equals(age)) {
+			// set stroke
+			pg.stroke(0, 0, 0);
+			pg.strokeWeight(3);
+			// cross marker such that 
+			float crossSize = radius + 2;
+			pg.line(x-crossSize, y-crossSize, x+crossSize, y+crossSize);
+			pg.line(x-crossSize, y+crossSize, x+crossSize, y-crossSize);
+		}
+	}
+	
 	
 	/*
 	 * getters for earthquake properties
@@ -108,6 +126,10 @@ public abstract class EarthquakeMarker extends SimplePointMarker
 	
 	public float getDepth() {
 		return Float.parseFloat(getProperty("depth").toString());	
+	}
+	
+	public String getAge() {
+		return (String) getProperty("age");
 	}
 	
 	public String getTitle() {

@@ -80,7 +80,7 @@ public class EarthquakeCityMap extends PApplet {
 		// earthquakesURL = "test2.atom";
 		
 		// WHEN TAKING THIS QUIZ: Uncomment the next line
-		//earthquakesURL = "quiz1.atom";
+		earthquakesURL = "quiz1.atom";
 		
 		
 		// (2) Reading in earthquake data and geometric properties
@@ -113,7 +113,7 @@ public class EarthquakeCityMap extends PApplet {
 	    // could be used for debugging
 	    // Note: if the applet is launched with a large earthquake file/feed 
 	    // (e.g. 1.0+ Past week or 30 days), printQuakes may take a long time to run
-	    // printQuakes();
+	    printQuakes();
 	 		
 	    // (3) Add markers to map
 	    //     NOTE: Country markers are not added to the map.  They are used
@@ -145,7 +145,7 @@ public class EarthquakeCityMap extends PApplet {
 		text("Earthquake Key", 150, 105);
 		
 		// City Marker Triangle
-		fill(color(255, 0, 0));
+		fill(color(0, 255, 0));
 		triangle(150, 145, 135, 175, 165, 175);	// center: 150, 150, TRI_SIZE: 15
 		
 		// Land Quake Circle
@@ -156,22 +156,38 @@ public class EarthquakeCityMap extends PApplet {
 		// Ocean Quake Square
 		fill(color(255, 255, 255));
 		stroke(color(0, 0, 0));
+		strokeWeight(3);
 		rect(135, 230, 30, 30);
 		
 		// Shallow 
 		fill(color(255, 255, 0));
 		stroke(color(0, 0, 0));
+		strokeWeight(3);
 		ellipse(150, 362, 30, 30);
 		
 		// Intermediate
 		fill(color(0, 0, 255));
 		stroke(color(0, 0, 0));
+		strokeWeight(3);
 		ellipse(150, 407, 30, 30);
 		
 		// Deep
 		fill(color(255, 0, 0));
 		stroke(color(0, 0, 0));
+		strokeWeight(3);
 		ellipse(150, 452, 30, 30);
+		
+		// Past Day
+		fill(color(255, 255, 255));
+		stroke(color(0, 0, 0));
+		strokeWeight(3);
+		ellipse(150, 497, 30, 30);
+		line(135, 482, 165, 512);
+		line(135, 512, 165, 482);
+		// fill(0);
+		// textSize(32);
+		// text("X", 150, 497);
+		
 
 		fill(0, 0, 0);
 		text("City Marker", 195, 160);
@@ -183,6 +199,7 @@ public class EarthquakeCityMap extends PApplet {
 		text("Shallow (0-70km)", 195, 360);
 		text("Intermediate (70-300km)", 195, 405);
 		text("Deep (300-700km)", 195, 450);
+		text("Past Day", 195, 495);
 		// text("5.0+ Magnitude", 75, 125);
 		// text("4.0+ Magnitude", 75, 175);
 		// text("Below 4.0", 75, 225);
