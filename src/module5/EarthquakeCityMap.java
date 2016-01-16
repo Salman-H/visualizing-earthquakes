@@ -20,8 +20,8 @@ import processing.core.PApplet;
 /** EarthquakeCityMap
  * An application with an interactive map displaying earthquake data.
  * Author: UC San Diego Intermediate Software Development MOOC team
- * @author Your name here
- * Date: July 17, 2015
+ * @author Salman Hashmi
+ * Date: January 15, 2016
  * */
 public class EarthquakeCityMap extends PApplet {
 	
@@ -64,13 +64,13 @@ public class EarthquakeCityMap extends PApplet {
 	
 	public void setup() {		
 		// (1) Initializing canvas and map tiles
-		size(900, 700, OPENGL);
+		size(2450, 1400, OPENGL);
 		if (offline) {
 		    map = new UnfoldingMap(this, 200, 50, 650, 600, new MBTilesMapProvider(mbTilesString));
 		    earthquakesURL = "2.5_week.atom";  // The same feed, but saved August 7, 2015
 		}
 		else {
-			map = new UnfoldingMap(this, 200, 50, 650, 600, new Google.GoogleMapProvider());
+			map = new UnfoldingMap(this, 200, 50, 2400, 1300, new Google.GoogleMapProvider());
 			// IF YOU WANT TO TEST WITH A LOCAL FILE, uncomment the next line
 		    //earthquakesURL = "2.5_week.atom";
 		}
@@ -146,6 +146,30 @@ public class EarthquakeCityMap extends PApplet {
 	private void selectMarkerIfHover(List<Marker> markers)
 	{
 		// TODO: Implement this method
+		
+		// If a marker is already selected, return
+		if (lastSelected != null) {
+			return;
+		}
+		
+		// Use isInside() method of AbstractMarker Class to check if the
+		// mouse cursor is inside the current marker being iterated over
+		for (Marker marker: markers) {
+			
+			// Marker's method, isInside(map, checkX, checkY), checks whether given mouse position 
+			// is inside this marker. mouseX and mouseY are PApplet instance variables
+			// storing the values of the current mouse position x and y
+			
+			if (marker.isInside(map, mouseX, mouseY)) {
+				
+				// Set the lastSelected marker to be the first marker found under the cursor
+				CommonMarker commonMarker = (CommonMarker)marker;
+				lastSelected = commonMarker;	// lastSelected.setLocation(marker.getLocation());
+				lastSelected.setSelected(true);	// commonMarker.setSelected(true);
+				// No other markers should then be selected
+				return;	// break
+			}
+		}
 	}
 	
 	/** The event handler for mouse clicks
@@ -181,7 +205,7 @@ public class EarthquakeCityMap extends PApplet {
 		int xbase = 25;
 		int ybase = 50;
 		
-		rect(xbase, ybase, 150, 250);
+		rect(xbase, ybase, 500, 1300);
 		
 		fill(0);
 		textAlign(LEFT, CENTER);
