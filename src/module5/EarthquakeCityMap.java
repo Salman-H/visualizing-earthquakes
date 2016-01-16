@@ -166,6 +166,8 @@ public class EarthquakeCityMap extends PApplet {
 				CommonMarker commonMarker = (CommonMarker)marker;
 				lastSelected = commonMarker;	// lastSelected.setLocation(marker.getLocation());
 				lastSelected.setSelected(true);	// commonMarker.setSelected(true);
+				// ** TEST showTitle()
+				//showTitle(PGraphics pg, mouseX, mouseY);
 				// No other markers should then be selected
 				return;	// break
 			}

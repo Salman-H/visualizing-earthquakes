@@ -18,7 +18,7 @@ import processing.core.PGraphics;
 // That's what's expected.
 public class CityMarker extends CommonMarker {
 	
-	public static int TRI_SIZE = 5;  // The size of the triangle marker
+	public static int TRI_SIZE = 10;  // The size of the triangle marker
 	
 	public CityMarker(Location location) {
 		super(location);
@@ -35,7 +35,7 @@ public class CityMarker extends CommonMarker {
 	/**
 	 * Implementation of method to draw marker on the map.
 	 */
-	public void draw(PGraphics pg, float x, float y) {
+	public void drawMarker(PGraphics pg, float x, float y) {
 		// Save previous drawing style
 		pg.pushStyle();
 		
@@ -52,10 +52,16 @@ public class CityMarker extends CommonMarker {
 	{
 		
 		// TODO: Implement this method
-	}
-	
-	public void drawMarker(PGraphics pg, float x, float y) {
+		String cityProperties = getCity() + ", " + getCountry() + "\n" + "Population: " + getPopulation() + " million";
 		
+		pg.pushStyle();
+		
+		pg.fill(255, 255, 255);
+		pg.rect(x, y-TRI_SIZE-60, pg.textWidth(cityProperties)+ 20, 60);
+		
+		pg.fill(0);
+		pg.textSize(18);
+		pg.text(cityProperties, x+5, y-TRI_SIZE-35);
 	}
 	
 	
