@@ -62,6 +62,8 @@ public class CityMarker extends CommonMarker {
 		pg.fill(0);
 		pg.textSize(18);
 		pg.text(cityProperties, x+5, y-TRI_SIZE-35);
+		
+		pg.popStyle();
 	}
 	
 	
