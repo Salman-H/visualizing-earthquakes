@@ -185,7 +185,105 @@ public class EarthquakeCityMap extends PApplet {
 		// TODO: Implement this method
 		// Hint: You probably want a helper method or two to keep this code
 		// from getting too long/disorganized
+		
+		// if mouse is clicked with cursor outside any markers while a current marker(lastClicked)
+		// is already selected, i.e. lastClicked still active, then display(unhide) ALL markers
+		// and also de-select the lastClicked marker
+		if (lastClicked != null) {
+			unhideMarkers();
+			lastClicked = null;
+		}
+		// else if mouse is clicked while no markers are active, then it has to be 
+		// determined whether the cursor was inside any markers during the click
+		else if (lastClicked == null) {
+			// specifically, we have to check, one-by-one, whether the cursor was inside
+			// a city marker or a quake marker and then respond accordingly 
+			checkIfClickedOnQuakeMarker();
+			// while checking for the earthquake clicks, a marker could have been clicked
+			// so make sure no markers are active before proceeding to check for city clicks
+			if (lastClicked == null) {
+				checkIfClickedOnCityMarker();
+			}
+		}
 	}
+	
+	/**
+	 * Is called when mouse is clicked while all markers are unhidden i.e.
+	 * when there is no single selected marker on display. In that case, this
+	 * method determines whether the mouse was clicked inside of an earthquake marker 
+	 * or not. If so, only that earthquake marker is displayed along with any cities 
+	 * within the threat circle of that earthquake, and all other city and quake markers
+	 * are hidden. Otherwise, if the mouse was not clicked inside any quake markers, then
+	 * nothing happens.
+	 */
+	private void checkIfClickedOnQuakeMarker() {
+		// no need to check for quake clicks if another marker was lastClicked and active
+		if (lastClicked != null) return;
+		
+		// otherwise proceed with finding out which, if any, quake marker is clicked
+		
+		// loop over all quake markers to see if cursor is inside any one of them
+		for (Marker eq: quakeMarkers) {
+			EarthquakeMarker quake = (EarthquakeMarker)eq;
+			
+			// if cursor is inside a displayed quake marker,
+			if (!quake.isHidden() && quake.isInside(map, mouseX, mouseY)) {
+				// Set the lastClicked marker to be this current marker
+				lastClicked = quake;
+				
+				// then loop over all city markers and..
+				for (Marker city: cityMarkers) {
+					// for each city marker,
+					// if quake-city distance > quake-threat distance
+					if (quake.getDistanceTo(city.getLocation()) > quake.threatCircle()) {
+						// hide that city
+						city.setHidden(true);
+					}
+				}
+				// finally, after hiding all quake markers that weren't clicked,..
+				for (Marker otherMarker: quakeMarkers) {
+					if (otherMarker != lastClicked) {
+						otherMarker.setHidden(true);
+					}
+				}
+				//..end method execution
+				return;
+			}	
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	private void checkIfClickedOnCityMarker() {
+		// no need to check for city clicks if another marker was lastClicked and active
+		if (lastClicked != null) return;
+		
+		for (Marker c: cityMarkers) {
+			CommonMarker city = (CommonMarker)c;
+			
+			if (!city.isHidden() && city.isInside(map, mouseX, mouseY)) {
+				lastClicked = city;
+				
+				for (Marker eq: quakeMarkers) {
+					EarthquakeMarker quake = (EarthquakeMarker)eq;
+					if (quake.threatCircle() < quake.getDistanceTo(city.getLocation())) {
+						// quake not affecting city
+						quake.setHidden(true);
+					}
+				}
+				// hide all other cities and..
+				for (Marker otherCity: cityMarkers) {
+					if (otherCity != lastClicked) {
+						otherCity.setHidden(true);
+					}
+				}
+				//..end execution
+				return;
+			}
+		}
+	}
+	
 	
 	
 	// loop over and unhide all markers
