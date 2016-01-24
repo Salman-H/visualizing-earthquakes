@@ -7,10 +7,11 @@ import processing.core.PGraphics;
 /** Implements a visual marker for earthquakes on an earthquake map
  * 
  * @author UC San Diego Intermediate Software Development MOOC team
+ * @author Salman Hashmi
  *
  */
 // TODO: Implement the comparable interface
-public abstract class EarthquakeMarker extends CommonMarker
+public abstract class EarthquakeMarker extends CommonMarker implements Comparable<EarthquakeMarker>
 {
 	
 	// Did the earthquake occur on land?  This will be set by the subclasses.
@@ -57,6 +58,13 @@ public abstract class EarthquakeMarker extends CommonMarker
 	
 	// TODO: Add the method:
 	// public int compareTo(EarthquakeMarker marker)
+	public int compareTo(EarthquakeMarker marker) {
+		Float thisMag = new Float(this.getMagnitude());
+		Float otherMag = new Float(marker.getMagnitude());
+		// return negative of the result of compareTo() so that the
+		// list is returned with descending order of magnitude
+		return (-1*(thisMag.compareTo(otherMag)));
+	}
 	
 	
 	// calls abstract method drawEarthquake and then checks age and draws X if needed
