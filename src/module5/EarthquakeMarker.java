@@ -107,6 +107,18 @@ public abstract class EarthquakeMarker extends CommonMarker
 		
 		pg.popStyle();
 	}
+	
+	/**
+	 * Show quake-related information if a quake marker is clicked
+	 */
+	public void showInfo(PGraphics pg, float x, float y, int displayedMarkersCount) {
+		
+		pg.fill(0);
+		//pg.textAlign(LEFT, CENTER);
+		pg.textSize(27);
+		pg.text("Quake Info", 25+125, 50+525);
+	
+	}
 
 	
 	/**

@@ -105,7 +105,7 @@ public class EarthquakeCityMap extends PApplet {
 	    }
 
 	    // could be used for debugging
-	    printQuakes();
+	    //printQuakes();
 	 		
 	    // (3) Add markers to map
 	    //     NOTE: Country markers are not added to the map.  They are used
@@ -191,6 +191,7 @@ public class EarthquakeCityMap extends PApplet {
 		// and also de-select the lastClicked marker
 		if (lastClicked != null) {
 			unhideMarkers();
+			lastClicked.setClicked(false); /************************************************************/
 			lastClicked = null;
 		}
 		// else if mouse is clicked while no markers are active, then it has to be 
@@ -259,25 +260,43 @@ public class EarthquakeCityMap extends PApplet {
 		// no need to check for city clicks if another marker was lastClicked and active
 		if (lastClicked != null) return;
 		
+		int hiddenMarkersCount = 0;
+		float cumulativeMag = 0.0f;
+		
 		for (Marker c: cityMarkers) {
 			CommonMarker city = (CommonMarker)c;
 			
 			if (!city.isHidden() && city.isInside(map, mouseX, mouseY)) {
 				lastClicked = city;
+				city.setClicked(true);	/****************************************************************/
 				
 				for (Marker eq: quakeMarkers) {
 					EarthquakeMarker quake = (EarthquakeMarker)eq;
 					if (quake.threatCircle() < quake.getDistanceTo(city.getLocation())) {
 						// quake not affecting city
 						quake.setHidden(true);
+						hiddenMarkersCount++;
+					}
+					else {
+						// calculate cumulative magnitude of quakes
+						cumulativeMag = cumulativeMag + quake.getMagnitude();
 					}
 				}
+				// set threatMarkerCount
+				int threateningQuakesCount = quakeMarkers.size()-hiddenMarkersCount;
+				city.setThreatMarkers(threateningQuakesCount);
+				
+				// set averageQuakeMagnitude for earthquakes affecting this city
+				CityMarker thisCity = (CityMarker)city;
+				thisCity.setAverageQuakeMag(cumulativeMag/threateningQuakesCount);
+				
 				// hide all other cities and..
 				for (Marker otherCity: cityMarkers) {
 					if (otherCity != lastClicked) {
 						otherCity.setHidden(true);
 					}
 				}
+				
 				//..end execution
 				return;
 			}

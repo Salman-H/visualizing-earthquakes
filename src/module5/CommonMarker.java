@@ -15,6 +15,10 @@ public abstract class CommonMarker extends SimplePointMarker {
 	// Records whether this marker has been clicked (most recently)
 	protected boolean clicked = false;
 	
+	// number of markers who either threat this marker or are threatened by it
+	// These are the markers that are displayed when this marker is clicked
+	protected int numberOfThreatMarkers;
+	
 	public CommonMarker(Location location) {
 		super(location);
 	}
@@ -33,6 +37,16 @@ public abstract class CommonMarker extends SimplePointMarker {
 		clicked = state;
 	}
 	
+	// Getter method for numberOfThreatMarkers field
+	public int getThreatMarkers() {
+		return numberOfThreatMarkers;
+	}
+	
+	// Setter method for numberOfThreatMarkers field
+	public void setThreatMarkers(int number) {
+		numberOfThreatMarkers = number;
+	}
+	
 	// Common piece of drawing method for markers; 
 	// Note that you should implement this by making calls 
 	// drawMarker and showTitle, which are abstract methods 
@@ -41,11 +55,17 @@ public abstract class CommonMarker extends SimplePointMarker {
 		// For starter code just drawMaker(...)
 		if (!hidden) {
 			drawMarker(pg, x, y);
+			
 			if (selected) {
 				showTitle(pg, x, y);  // You will implement this in the subclasses
+			}
+			// TEST show City Info on Click
+			if (clicked) {
+				showInfo(pg, x, y, numberOfThreatMarkers);
 			}
 		}
 	}
 	public abstract void drawMarker(PGraphics pg, float x, float y);
 	public abstract void showTitle(PGraphics pg, float x, float y);
+	public abstract void showInfo(PGraphics pg, float x, float y, int displayedMarkersCount);
 }
